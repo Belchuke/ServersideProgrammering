@@ -15,7 +15,7 @@ namespace Serversideprogrammeringsapi.Identity.Repo
         Task<bool> CheckPasswordAsync(ApiUser user, string password);
 
         Task<string> GenerateTwoFactorTokenAsync(ApiUser user);
-        Task<ApiUser> TwoFactorSignInAsync(SignInTwoFactorModel input);
+        Task<ApiUser?>? TwoFactorSignInAsync(TwoFactorInput input);
 
 
         Task<IdentityResult> CreateAsync(ApiUser apiUser, string password);

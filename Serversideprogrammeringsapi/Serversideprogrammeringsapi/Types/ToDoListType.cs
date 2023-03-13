@@ -8,6 +8,7 @@ namespace Serversideprogrammeringsapi.Types
         [IsProjected(true)] // enforces requesting 
         public long Id { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         public long UserId { get; set; }
 
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 50)]
@@ -18,16 +19,18 @@ namespace Serversideprogrammeringsapi.Types
         {
             return dbContext.ToDoListIteams
                 .Where(item => item.ToDoListId == Id)
-                .Select(i => new ToDoListItemType()
-                {
-                    Id = i.Id,
-                    Name = i.Data.Decrypt(i.Key, i.IV),
-                    ToDoListId = Id,
-                    Created = i.Created,
-                    Disabled = i.Disabled,
-                    IsEnabled = i.IsEnabled,
-                    Updated = i.Updated,
-                });
+                .Select(i => 
+                    new ToDoListItemType()
+                    {
+                        Id = i.Id,
+                        Name = i.DataName.Decrypt(i.KeyName, i.IVName),
+                        Description = i.DataDescription.Decrypt(i.KeyDescription, i.IVDescription),
+                        ToDoListId = Id,
+                        Created = i.Created,
+                        Disabled = i.Disabled,
+                        IsEnabled = i.IsEnabled,
+                        Updated = i.Updated,
+                    });
         }
 
 

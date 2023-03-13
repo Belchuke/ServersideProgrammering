@@ -7,7 +7,10 @@ using Serversideprogrammeringsapi.Identity.Repo;
 using Serversideprogrammeringsapi.Repo.OneTimePasswordRepo;
 using Serversideprogrammeringsapi.Schema.Mutations;
 using Serversideprogrammeringsapi.Schema.Query;
+using Serversideprogrammeringsapi.Services.AuthService;
 using Serversideprogrammeringsapi.Services.ExternalContactService;
+
+string dbString = EnvHandler.UserDBString();
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +39,7 @@ services.AddSingleton<IExternalContactService, ExternalContactService>();
 services.AddGraphQLServer()
     .AddQueryType<Query>()
     .AddMutationType<Mutation>()
+    .AddTypeExtension<AuthMutations>()
     .RegisterDbContext<ApiDbContext>(DbContextKind.Pooled)
     .ModifyOptions(o => o.EnableOneOf = true)
     .AddFiltering()
@@ -50,14 +54,15 @@ services.AddTransient<IUserManager, UserManager>();
 services.AddTransient<IRefreshTokenRepo, RefreshTokenRepo>();
 
 services.AddScoped<IOTPRepo, OTPRepo>();
+services.AddScoped<IAuthService, AuthService>();
 
 if (env.IsDevelopment())
 {
-    services.AddScoped<IMailSenderService, DummyMailSenderService>();
+    services.AddSingleton<IMailSenderService, DummyMailSenderService>();
 }
 else // Production serive
 {
-    services.AddScoped<IMailSenderService, SimpleSmtpMailSenderService>();
+    services.AddSingleton<IMailSenderService, SimpleSmtpMailSenderService>();
 }
 
 var app = builder.Build();
@@ -77,5 +82,6 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints => { endpoints.MapGraphQL(); });
 
+InitialData.PopulateTestData(app).Wait();
 
 app.Run();

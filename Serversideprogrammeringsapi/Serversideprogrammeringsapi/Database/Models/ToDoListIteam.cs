@@ -9,11 +9,15 @@ namespace Serversideprogrammeringsapi.Database.Models
         [Key]
         public long Id { get; set; }
 
-        public string Data { get; set; }
-        public string Key { get; set; }
-        public string IV { get; set; }
+        public string DataName { get; set; }
+        public string KeyName { get; set; }
+        public string IVName { get; set; }
 
-        public int ToDoListId { get; set; }
+        public string DataDescription { get; set; }
+        public string KeyDescription { get; set; }
+        public string IVDescription { get; set; }
+
+        public long ToDoListId { get; set; }
         public ToDoLists ToDoList { get; set; }
 
         public DateTimeOffset Created { get; set; }

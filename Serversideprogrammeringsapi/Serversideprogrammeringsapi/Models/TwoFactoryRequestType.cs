@@ -1,10 +1,8 @@
 ﻿namespace Serversideprogrammeringsapi.Models
 {
-    public class TwoFactoryRequestType
+    public class CredentialResult
     {
         public bool IsSuccessful { get; set; }
-
-        public DateTimeOffset? Expires { get; set; }
 
         public string? Message { get; set; }
     }
