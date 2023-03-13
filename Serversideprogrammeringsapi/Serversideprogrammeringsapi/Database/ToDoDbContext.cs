@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Serversideprogrammeringsapi.Database.Models;
 
-namespace Serversideprogrammeringsapi.Database.Models
+namespace Serversideprogrammeringsapi.Database
 {
-    public class ApiDbContext : IdentityDbContext<ApiUser, ApiRole, long, IdentityUserClaim<long>, ApiUserRole, IdentityUserLogin<long>, IdentityRoleClaim<long>, IdentityUserToken<long>>
+    public class ToDoDbContext : DbContext
     {
-        public virtual DbSet<AuthRefreshToken> AuthRefreshToken { get; set; }
+        public DbSet<ToDoLists> ToDoLists { get; set; }
+        public DbSet<ToDoListIteam> ToDoListIteams { get; set; }
 
-        public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options)
+        public ToDoDbContext(DbContextOptions<ToDoDbContext> options) : base(options)
         {
             SavingChanges += ApiDbContext_SavingChanges;
         }

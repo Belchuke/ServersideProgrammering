@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Serversideprogrammeringsapi.Database;
 using Serversideprogrammeringsapi.Database.Models;
 using Serversideprogrammeringsapi.Identity.JWT;
 using Serversideprogrammeringsapi.Identity.Properties;

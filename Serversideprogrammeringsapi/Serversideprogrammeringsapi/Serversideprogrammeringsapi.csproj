@@ -29,16 +29,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="7.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Otp.NET" Version="1.3.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Env\" />
-    <Folder Include="Repo\" />
-    <Folder Include="Schema\Mutations\" />
-    <Folder Include="Schema\Query\" />
-    <Folder Include="Services\ExternalContactService\" />
-    <Folder Include="Types\" />
   </ItemGroup>
 
 </Project>

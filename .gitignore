@@ -365,17 +365,19 @@ FodyWeavers.xsd
 # Dummy email implementation json files
 /CubicAPI/emails
 
-.idea/.idea.Booking-Backend/.idea/.name
-.idea/.idea.Booking-Backend/.idea/efCoreCommonOptions.xml
-.idea/.idea.Booking-Backend/.idea/efCoreDialogsState.xml
-.idea/.idea.Booking-Backend/.idea/indexLayout.xml
-.idea/.idea.Booking-Backend/.idea/projectSettingsUpdater.xml
-.idea/.idea.Booking-Backend/.idea/vcs.xml
-.idea/.idea.Booking-Backend/.idea/workspace.xml
+.idea/.idea.Serversideprogrammeringsapi/.idea/.name
+.idea/.idea.Serversideprogrammeringsapi/.idea/efCoreCommonOptions.xml
+.idea/.idea.Serversideprogrammeringsapi/.idea/efCoreDialogsState.xml
+.idea/.idea.Serversideprogrammeringsapi/.idea/indexLayout.xml
+.idea/.idea.Serversideprogrammeringsapi/.idea/projectSettingsUpdater.xml
+.idea/.idea.Serversideprogrammeringsapi/.idea/vcs.xml
+.idea/.idea.Serversideprogrammeringsapi/.idea/workspace.xml
 
 # Fake email and sms in development mode
 /GraphQL/emails
-/GraphQL/sms
 
 # Ignore .env file
+
+# Ignore appsettings.json
+# Ignore appsettings.Development
 .env

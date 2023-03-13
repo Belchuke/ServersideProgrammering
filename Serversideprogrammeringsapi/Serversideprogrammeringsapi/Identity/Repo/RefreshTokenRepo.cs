@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Serversideprogrammeringsapi.Database;
 using Serversideprogrammeringsapi.Database.Models;
 
 namespace Serversideprogrammeringsapi.Identity.Repo

@@ -43,7 +43,8 @@ namespace Serversideprogrammeringsapi.Identity.Repo
 
         public async Task<ApiUser> TwoFactorSignInAsync(SignInTwoFactorModel input)
         {
-            var result = await _signInManager.TwoFactorSignInAsync("Email", input.Token, false, false);
+            SignInResult result = await _signInManager.TwoFactorSignInAsync("Email", input.Token, false, false);
+
             if (result.Succeeded)
             {
                 return await _userManager.FindByNameAsync(input.Username);

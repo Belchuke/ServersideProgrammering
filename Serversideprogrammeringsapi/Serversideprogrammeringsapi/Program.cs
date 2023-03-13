@@ -1,26 +1,44 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Serversideprogrammeringsapi.Database.Models;
+using Serversideprogrammeringsapi.Database;
+using Serversideprogrammeringsapi.Env;
 using Serversideprogrammeringsapi.Identity;
 using Serversideprogrammeringsapi.Identity.Repo;
+using Serversideprogrammeringsapi.Repo.OneTimePasswordRepo;
+using Serversideprogrammeringsapi.Schema.Mutations;
+using Serversideprogrammeringsapi.Schema.Query;
+using Serversideprogrammeringsapi.Services.ExternalContactService;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 IServiceCollection services = builder.Services;
-
-ConfigurationManager configuration = builder.Configuration;
-
 IWebHostEnvironment env = builder.Environment;
 
-services.AddPooledDbContextFactory<ApiDbContext>(o => o.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-services.AddScoped<ApiDbContext>(p => p.GetRequiredService<IDbContextFactory<ApiDbContext>>().CreateDbContext());
-services.AddLogging();
+
+IConfigurationBuilder configBuilder = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+    .AddEnvironmentVariables();
+
+IConfigurationRoot configuration = configBuilder.Build();
 
 IdentityConfiguration.Configure(configuration, services);
 
+services.AddPooledDbContextFactory<ApiDbContext>(o => o.UseSqlServer(EnvHandler.UserDBString()));
+services.AddPooledDbContextFactory<ToDoDbContext>(o => o.UseSqlServer(EnvHandler.ToDoDBString()));
+
+services.AddScoped<ApiDbContext>(p => p.GetRequiredService<IDbContextFactory<ApiDbContext>>().CreateDbContext());
+services.AddScoped<ToDoDbContext>(p => p.GetRequiredService<IDbContextFactory<ToDoDbContext>>().CreateDbContext());
+services.AddLogging();
+services.AddSingleton<IExternalContactService, ExternalContactService>();
+
+
 services.AddGraphQLServer()
-     .AddFiltering()
+    .AddQueryType<Query>()
+    .AddMutationType<Mutation>()
+    .RegisterDbContext<ApiDbContext>(DbContextKind.Pooled)
+    .ModifyOptions(o => o.EnableOneOf = true)
+    .AddFiltering()
     .AddSorting()
     .AddProjections()
     .AddAuthorization()
@@ -30,6 +48,17 @@ services.AddGraphQLServer()
 services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
 services.AddTransient<IUserManager, UserManager>();
 services.AddTransient<IRefreshTokenRepo, RefreshTokenRepo>();
+
+services.AddScoped<IOTPRepo, OTPRepo>();
+
+if (env.IsDevelopment())
+{
+    services.AddScoped<IMailSenderService, DummyMailSenderService>();
+}
+else // Production serive
+{
+    services.AddScoped<IMailSenderService, SimpleSmtpMailSenderService>();
+}
 
 var app = builder.Build();
 
