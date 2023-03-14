@@ -6,13 +6,12 @@ using Serversideprogrammeringsapi.Database.Models;
 using Serversideprogrammeringsapi.Env;
 using Serversideprogrammeringsapi.Identity;
 using Serversideprogrammeringsapi.Identity.Repo;
+using Serversideprogrammeringsapi.Repo.AESRepo;
 using Serversideprogrammeringsapi.Repo.OneTimePasswordRepo;
 using Serversideprogrammeringsapi.Schema.Mutations;
 using Serversideprogrammeringsapi.Schema.Query;
 using Serversideprogrammeringsapi.Services.AuthService;
 using Serversideprogrammeringsapi.Services.ExternalContactService;
-
-string dbString = EnvHandler.UserDBString();
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -42,7 +41,7 @@ services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
 services.AddScoped<SignInManager<ApiUser>>();
 services.AddTransient<IUserManager, UserManager>();
 services.AddTransient<IRefreshTokenRepo, RefreshTokenRepo>();
-
+services.AddScoped<IAESRepo, AESRepo>();
 
 services.AddScoped<IOTPRepo, OTPRepo>();
 services.AddScoped<IAuthService, AuthService>();

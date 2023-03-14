@@ -19,6 +19,13 @@ namespace Serversideprogrammeringsapi.Env
         }
 
 
+        public static string GetAESKey()
+        {
+            DotNetEnv.Env.Load(".env");
+
+            return DotNetEnv.Env.GetString("AES_KEY", "");
+        }
+
         public static string UserDBString()
         {
             DotNetEnv.Env.Load(".env");

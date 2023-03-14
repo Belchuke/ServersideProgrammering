@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Serversideprogrammeringsapi.Database;
+using Serversideprogrammeringsapi.Env;
 using Serversideprogrammeringsapi.ExtensionMethods;
 
 namespace Serversideprogrammeringsapi.Types
@@ -16,6 +17,8 @@ namespace Serversideprogrammeringsapi.Types
         [UseProjection]
         public async Task<ToDoListType> ToDoList([ScopedService] ToDoDbContext dbContext)
         {
+            string aesKey = EnvHandler.GetAESKey();
+
             return await dbContext.ToDoLists
                 .Where(x => x.Id == ToDoListId)
                 .Select(list => 
@@ -23,8 +26,12 @@ namespace Serversideprogrammeringsapi.Types
                     {
                         Id = list.Id,
                         UserId = list.UserId,
-                        Name = list.DataName.Decrypt(list.KeyName, list.IVName),
-                        Description = list.DataDescription.Decrypt(list.KeyDescription, list.IVDescription),
+                        Name = list.DataName.Decrypt(aesKey, list.IVName),
+                        Description = list.DataDescription.Decrypt(aesKey, list.IVDescription),
+                        Created = list.Created,
+                        Updated = list.Updated,
+                        Disabled = list.Disabled,
+                        IsEnabled = list.IsEnabled,
                     })
                 .FirstAsync();
         }

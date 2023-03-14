@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Serversideprogrammeringsapi.Database;
+using Serversideprogrammeringsapi.Env;
 using Serversideprogrammeringsapi.ExtensionMethods;
 
 namespace Serversideprogrammeringsapi.Types
@@ -26,13 +27,15 @@ namespace Serversideprogrammeringsapi.Types
                 return new List<ToDoListType>();
             }
 
+            string aesKey = EnvHandler.GetAESKey();
+
             return toDoDbContext.ToDoLists
                 .Where(x => x.UserId == UserId)
                 .Select(list =>
                     new ToDoListType()
                     {
                         Id = list.Id,
-                        Name = list.DataName.Decrypt(list.KeyName, list.IVName),
+                        Name = list.DataName.Decrypt(aesKey, list.IVName),
                         Created = DateTimeOffset.UtcNow,
                         Updated = DateTimeOffset.UtcNow,
                         Disabled = DateTimeOffset.UtcNow,

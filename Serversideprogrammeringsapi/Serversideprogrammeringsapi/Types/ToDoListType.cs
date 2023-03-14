@@ -1,4 +1,5 @@
 ﻿using Serversideprogrammeringsapi.Database;
+using Serversideprogrammeringsapi.Env;
 using Serversideprogrammeringsapi.ExtensionMethods;
 
 namespace Serversideprogrammeringsapi.Types
@@ -17,14 +18,16 @@ namespace Serversideprogrammeringsapi.Types
         [UseSorting]
         public IQueryable<ToDoListItemType> ListItems([ScopedService] ToDoDbContext dbContext)
         {
+            string aesKey = EnvHandler.GetAESKey();
+
             return dbContext.ToDoListIteams
                 .Where(item => item.ToDoListId == Id)
                 .Select(i => 
                     new ToDoListItemType()
                     {
                         Id = i.Id,
-                        Name = i.DataName.Decrypt(i.KeyName, i.IVName),
-                        Description = i.DataDescription.Decrypt(i.KeyDescription, i.IVDescription),
+                        Name = i.DataName.Decrypt(aesKey, i.IVName),
+                        Description = i.DataDescription.Decrypt(aesKey, i.IVDescription),
                         ToDoListId = Id,
                         Created = i.Created,
                         Disabled = i.Disabled,

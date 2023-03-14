@@ -373,8 +373,8 @@ FodyWeavers.xsd
 .idea/.idea.Serversideprogrammeringsapi/.idea/vcs.xml
 .idea/.idea.Serversideprogrammeringsapi/.idea/workspace.xml
 
-/Serversideprogrammeringsapi/emails
-Serversideprogrammeringsapi/emails
+/Serversideprogrammeringsapi/Serversideprogrammeringsapi/emails
+Serversideprogrammeringsapi/Serversideprogrammeringsapi/emails
 
 # Ignore .env file
 .env
