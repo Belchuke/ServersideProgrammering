@@ -373,11 +373,11 @@ FodyWeavers.xsd
 .idea/.idea.Serversideprogrammeringsapi/.idea/vcs.xml
 .idea/.idea.Serversideprogrammeringsapi/.idea/workspace.xml
 
-# Fake email and sms in development mode
-/GraphQL/emails
+/Serversideprogrammeringsapi/emails
+Serversideprogrammeringsapi/emails
 
 # Ignore .env file
-
-# Ignore appsettings.json
-# Ignore appsettings.Development
 .env
+# Ignore appsettings.json
+appsettings.json
+appsettings.Development.json
