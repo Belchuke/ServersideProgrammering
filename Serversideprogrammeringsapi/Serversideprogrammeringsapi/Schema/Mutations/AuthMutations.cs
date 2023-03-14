@@ -1,4 +1,5 @@
-﻿using Serversideprogrammeringsapi.Models;
+﻿using Serversideprogrammeringsapi.Database;
+using Serversideprogrammeringsapi.Models;
 using Serversideprogrammeringsapi.Services.AuthService;
 using Serversideprogrammeringsapi.Types;
 
@@ -12,12 +13,14 @@ namespace Serversideprogrammeringsapi.Schema.Mutations
             return await authService.AuthenticateWithCredentialsAsync(input);
         }
 
+        [UseDbContext(typeof(ToDoDbContext))]
         [UseProjection]
         public async Task<AuthResultType> ToFactorSignIn(TwoFactorInput input, [Service] IAuthService authService)
         {
             return await authService.AuthenticateTwoFactoryAsync(input);
         }
 
+        [UseDbContext(typeof(ToDoDbContext))]
         [UseProjection]
         public async Task<AuthResultType> Refresh([GraphQLName("refreshTokenId")] string refreshTokenId, [Service] IAuthService authService)
         {

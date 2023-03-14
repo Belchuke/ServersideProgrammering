@@ -11,9 +11,10 @@ namespace Serversideprogrammeringsapi.Identity.Repo
         private readonly UserManager<ApiUser> _userManager;
         private readonly SignInManager<ApiUser> _signInManager;
 
-        public UserManager(UserManager<ApiUser> userManager)
+        public UserManager(UserManager<ApiUser> userManager, SignInManager<ApiUser> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public async Task<ApiUser> FindByEmailAsync(string email)
@@ -43,11 +44,12 @@ namespace Serversideprogrammeringsapi.Identity.Repo
 
         public async Task<ApiUser?>? TwoFactorSignInAsync(TwoFactorInput input)
         {
-            SignInResult result = await _signInManager.TwoFactorSignInAsync("Email", input.Code, false, false);
+            ApiUser user = await _userManager.FindByNameAsync(input.Username);
+            bool result = await _userManager.VerifyTwoFactorTokenAsync(user, "Email", input.Code);
 
-            if (result.Succeeded)
+            if (result)
             {
-                return await _userManager.FindByNameAsync(input.Username);
+                return user;
             }
             else
             {

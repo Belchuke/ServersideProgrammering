@@ -12,7 +12,7 @@ using Serversideprogrammeringsapi.Database;
 namespace Serversideprogrammeringsapi.Migrations.UserMigrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20230313133528_IntialUser")]
+    [Migration("20230314082106_IntialUser")]
     partial class IntialUser
     {
         /// <inheritdoc />

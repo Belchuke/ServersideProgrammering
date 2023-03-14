@@ -12,7 +12,7 @@ using Serversideprogrammeringsapi.Database;
 namespace Serversideprogrammeringsapi.Migrations.ToDoMigrations
 {
     [DbContext(typeof(ToDoDbContext))]
-    [Migration("20230313135450_IntialToDo")]
+    [Migration("20230314082116_IntialToDo")]
     partial class IntialToDo
     {
         /// <inheritdoc />

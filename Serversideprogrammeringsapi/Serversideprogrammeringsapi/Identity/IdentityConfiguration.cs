@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Serversideprogrammeringsapi.Database;
 using Serversideprogrammeringsapi.Database.Models;
+using Serversideprogrammeringsapi.Env;
 using Serversideprogrammeringsapi.Identity.JWT;
 using Serversideprogrammeringsapi.Identity.Properties;
 
@@ -12,32 +13,36 @@ namespace Serversideprogrammeringsapi.Identity
     // https://www.yogihosting.com/aspnet-core-identity-two-factor-authentication/
     public class IdentityConfiguration
     {
-        private const string SecretKey = "SWWhpFEwnjyRGLmKE4DHSqv7VxlpLY5JneQZHvhmCOK9jgRohBU7Ac4FoCY3d8RGyZ+j88Es+jhiCWdEX5oy1g==";
-        private static readonly SymmetricSecurityKey _signingKey = new(Convert.FromBase64String(SecretKey));
+        //private const string SecretKey = "SWWhpFEwnjyRGLmKE4DHSqv7VxlpLY5JneQZHvhmCOK9jgRohBU7Ac4FoCY3d8RGyZ+j88Es+jhiCWdEX5oy1g==";
+        //private static readonly SymmetricSecurityKey _signingKey = new(Convert.FromBase64String(SecretKey));
 
         public static void Configure(IConfiguration configuration, IServiceCollection services)
         {
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
-            IConfigurationSection jwtAppSettingOptions = configuration.GetSection(nameof(JwtIssuerOptions));
+
+            JwtIssuerOptions jwtOptions = EnvHandler.GetJWTOptions();
+
+            SymmetricSecurityKey signingKey = new(Convert.FromBase64String(jwtOptions.Key));
+
 
             services.Configure<JwtIssuerOptions>(options =>
             {
-                options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
-                options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
-                options.SigningCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
+                options.Issuer = jwtOptions.Issuer;
+                options.Audience = jwtOptions.Audience;
+                options.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
             });
 
             TokenValidationParameters tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
-                ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
+                ValidIssuer = jwtOptions.Issuer,
 
                 ValidateAudience = true,
-                ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
+                ValidAudience = jwtOptions.Audience,
 
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = _signingKey,
+                IssuerSigningKey = signingKey,
 
                 NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
                 RequireExpirationTime = false,
@@ -51,10 +56,13 @@ namespace Serversideprogrammeringsapi.Identity
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, configureOptions =>
             {
-                configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                configureOptions.ClaimsIssuer = jwtOptions.Issuer;
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
                 configureOptions.SaveToken = true;
             });
+
+            services.AddAuthentication("Identity.TwoFactorUserId").AddIdentityCookies();
+
 
             // define authorization policies specify what roles are allowed to access each policy
             services.AddAuthorization(options =>
@@ -80,7 +88,9 @@ namespace Serversideprogrammeringsapi.Identity
             builder.AddRoleManager<RoleManager<ApiRole>>();
             builder.AddRoleValidator<RoleValidator<ApiRole>>();
             builder.AddEntityFrameworkStores<ApiDbContext>();
+            builder.AddSignInManager<SignInManager<ApiUser>>();
             builder.AddDefaultTokenProviders();
+            builder.AddTokenProvider<EmailTokenProvider<ApiUser>>("email");
 
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
                 .AllowAnyMethod()

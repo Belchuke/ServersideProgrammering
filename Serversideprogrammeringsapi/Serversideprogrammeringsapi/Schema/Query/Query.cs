@@ -1,6 +1,9 @@
 ﻿using HotChocolate.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Serversideprogrammeringsapi.Database;
 using Serversideprogrammeringsapi.ExtensionMethods;
+using Serversideprogrammeringsapi.Models;
 using Serversideprogrammeringsapi.Types;
 using System.Security.Claims;
 
@@ -11,7 +14,7 @@ namespace Serversideprogrammeringsapi.Schema.Query
         [UseDbContext(typeof(ApiDbContext))]
         [Authorize]
         [UseProjection]
-        public IQueryable<ToDoListType> GetUserLists(long userId, [ScopedService] ApiDbContext context, ClaimsPrincipal claims)
+        public IQueryable<ToDoListType> GetUserLists(long userId, ApiDbContext context, ClaimsPrincipal claims)
         {
             if (!claims.IsAdmin())
             {

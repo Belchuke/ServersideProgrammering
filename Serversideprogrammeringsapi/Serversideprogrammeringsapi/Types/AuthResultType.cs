@@ -19,14 +19,14 @@ namespace Serversideprogrammeringsapi.Types
 
         public UserType? User { get; set; }
 
-        public async Task<List<ToDoListType>> ToDoLists([ScopedService] ToDoDbContext toDoDbContext)
+        public List<ToDoListType> ToDoLists([Service] ToDoDbContext toDoDbContext)
         {
             if (UserId == null)
             {
                 return new List<ToDoListType>();
             }
 
-            return await toDoDbContext.ToDoLists
+            return toDoDbContext.ToDoLists
                 .Where(x => x.UserId == UserId)
                 .Select(list =>
                     new ToDoListType()
@@ -39,7 +39,7 @@ namespace Serversideprogrammeringsapi.Types
                         IsEnabled = true,
                         UserId = (long)UserId,
                     })
-                .ToListAsync();
+                .ToList();
         }
     }
 }

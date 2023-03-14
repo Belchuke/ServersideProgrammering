@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Serversideprogrammeringsapi.Database;
+using Serversideprogrammeringsapi.Database.Models;
 using Serversideprogrammeringsapi.Env;
 using Serversideprogrammeringsapi.Identity;
 using Serversideprogrammeringsapi.Identity.Repo;
@@ -36,11 +38,23 @@ services.AddLogging();
 services.AddSingleton<IExternalContactService, ExternalContactService>();
 
 
-services.AddGraphQLServer()
+services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
+services.AddScoped<SignInManager<ApiUser>>();
+services.AddTransient<IUserManager, UserManager>();
+services.AddTransient<IRefreshTokenRepo, RefreshTokenRepo>();
+
+
+services.AddScoped<IOTPRepo, OTPRepo>();
+services.AddScoped<IAuthService, AuthService>();
+
+services
+    .AddGraphQLServer()
+    .RegisterDbContext<ApiDbContext>(DbContextKind.Pooled)
+    .RegisterDbContext<ToDoDbContext>(DbContextKind.Pooled)
+    .RegisterService<IAuthService>()
     .AddQueryType<Query>()
     .AddMutationType<Mutation>()
     .AddTypeExtension<AuthMutations>()
-    .RegisterDbContext<ApiDbContext>(DbContextKind.Pooled)
     .ModifyOptions(o => o.EnableOneOf = true)
     .AddFiltering()
     .AddSorting()
@@ -49,12 +63,7 @@ services.AddGraphQLServer()
     .InitializeOnStartup();
 
 
-services.TryAddTransient<IHttpContextAccessor, HttpContextAccessor>();
-services.AddTransient<IUserManager, UserManager>();
-services.AddTransient<IRefreshTokenRepo, RefreshTokenRepo>();
 
-services.AddScoped<IOTPRepo, OTPRepo>();
-services.AddScoped<IAuthService, AuthService>();
 
 if (env.IsDevelopment())
 {
@@ -80,7 +89,10 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints => { endpoints.MapGraphQL(); });
+app.MapGraphQL().WithOptions(new HotChocolate.AspNetCore.GraphQLServerOptions()
+{
+    EnableBatching = true,
+});
 
 InitialData.PopulateTestData(app).Wait();
 

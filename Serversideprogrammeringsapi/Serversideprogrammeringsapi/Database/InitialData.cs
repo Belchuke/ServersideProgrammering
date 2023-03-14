@@ -18,6 +18,7 @@ namespace Serversideprogrammeringsapi.Database
             UserManager<ApiUser> userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApiUser>>();
 
             RoleManager<ApiRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApiRole>>();
+           
 
             if (!context.Users.Any())
             {
@@ -40,10 +41,11 @@ namespace Serversideprogrammeringsapi.Database
 
                 await AddAdminAccount(new ApiUser()
                 {
-                    UserName = "jcb.belchuke@gmail.com",
-                    Email = "jcb.belchuke@gmail.com",
+                    UserName = "jcb.a.belchuke@gmail.com",
+                    Email = "jcb.a.belchuke@gmail.com",
                     EmailConfirmed = true,
-                    TwoFactorEnabled = false,
+                    TwoFactorEnabled = true,
+                    IsEnabled = true,
                 });
 
                 await AddNormalUser(new ApiUser()

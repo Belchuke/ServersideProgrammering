@@ -23,9 +23,8 @@ namespace Serversideprogrammeringsapi.Identity.JWT
 
         public async Task<string> GenerateEncodedToken(string userName, ClaimsIdentity identity)
         {
-            SymmetricSecurityKey securtityKey = new(Convert.FromBase64String(_jwtOptions.Key));
 
-            SigningCredentials credentials = new SigningCredentials(securtityKey, SecurityAlgorithms.HmacSha256);
+            SigningCredentials credentials = _jwtOptions.SigningCredentials;
 
             List<Claim> getClaims = await ReturnClaims(userName, identity);
 
