@@ -212,28 +212,6 @@ namespace Serversideprogrammeringsapi.Migrations.UserMigrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "UserToDoLists",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ToDoListId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    Updated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    Disabled = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    IsEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    ApiUserId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserToDoLists", x => new { x.UserId, x.ToDoListId });
-                    table.ForeignKey(
-                        name: "FK_UserToDoLists_AspNetUsers_ApiUserId",
-                        column: x => x.ApiUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -282,11 +260,6 @@ namespace Serversideprogrammeringsapi.Migrations.UserMigrations
                 name: "IX_AuthRefreshToken_UserId",
                 table: "AuthRefreshToken",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserToDoLists_ApiUserId",
-                table: "UserToDoLists",
-                column: "ApiUserId");
         }
 
         /// <inheritdoc />
@@ -312,9 +285,6 @@ namespace Serversideprogrammeringsapi.Migrations.UserMigrations
 
             migrationBuilder.DropTable(
                 name: "SignupOtps");
-
-            migrationBuilder.DropTable(
-                name: "UserToDoLists");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

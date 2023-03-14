@@ -312,38 +312,6 @@ namespace Serversideprogrammeringsapi.Migrations.UserMigrations
                     b.ToTable("SignupOtps");
                 });
 
-            modelBuilder.Entity("Serversideprogrammeringsapi.Database.Models.UserToDoLists", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(0);
-
-                    b.Property<int>("ToDoListId")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
-
-                    b.Property<long?>("ApiUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset?>("Disabled")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<bool>("IsEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset>("Updated")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("UserId", "ToDoListId");
-
-                    b.HasIndex("ApiUserId");
-
-                    b.ToTable("UserToDoLists");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<long>", b =>
                 {
                     b.HasOne("Serversideprogrammeringsapi.Database.Models.ApiRole", null)
@@ -410,21 +378,9 @@ namespace Serversideprogrammeringsapi.Migrations.UserMigrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Serversideprogrammeringsapi.Database.Models.UserToDoLists", b =>
-                {
-                    b.HasOne("Serversideprogrammeringsapi.Database.Models.ApiUser", null)
-                        .WithMany("ToDoLists")
-                        .HasForeignKey("ApiUserId");
-                });
-
             modelBuilder.Entity("Serversideprogrammeringsapi.Database.Models.ApiRole", b =>
                 {
                     b.Navigation("TheUserRolesList");
-                });
-
-            modelBuilder.Entity("Serversideprogrammeringsapi.Database.Models.ApiUser", b =>
-                {
-                    b.Navigation("ToDoLists");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,10 +8,12 @@ using Serversideprogrammeringsapi.Identity;
 using Serversideprogrammeringsapi.Identity.Repo;
 using Serversideprogrammeringsapi.Repo.AESRepo;
 using Serversideprogrammeringsapi.Repo.OneTimePasswordRepo;
+using Serversideprogrammeringsapi.Repo.ToDoListRepo;
 using Serversideprogrammeringsapi.Schema.Mutations;
 using Serversideprogrammeringsapi.Schema.Query;
 using Serversideprogrammeringsapi.Services.AuthService;
 using Serversideprogrammeringsapi.Services.ExternalContactService;
+using Serversideprogrammeringsapi.Services.ToDoListService;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -42,18 +44,21 @@ services.AddScoped<SignInManager<ApiUser>>();
 services.AddTransient<IUserManager, UserManager>();
 services.AddTransient<IRefreshTokenRepo, RefreshTokenRepo>();
 services.AddScoped<IAESRepo, AESRepo>();
+services.AddScoped<IToDoListRepo, ToDoListRepo>();
 
 services.AddScoped<IOTPRepo, OTPRepo>();
 services.AddScoped<IAuthService, AuthService>();
+services.AddScoped<IToDoService, ToDoService>();
 
 services
     .AddGraphQLServer()
     .RegisterDbContext<ApiDbContext>(DbContextKind.Pooled)
     .RegisterDbContext<ToDoDbContext>(DbContextKind.Pooled)
-    .RegisterService<IAuthService>()
     .AddQueryType<Query>()
     .AddMutationType<Mutation>()
     .AddTypeExtension<AuthMutations>()
+    .AddTypeExtension<ToDoListMutations>()
+    .AddTypeExtension<ToDoListQuery>()
     .ModifyOptions(o => o.EnableOneOf = true)
     .AddFiltering()
     .AddSorting()

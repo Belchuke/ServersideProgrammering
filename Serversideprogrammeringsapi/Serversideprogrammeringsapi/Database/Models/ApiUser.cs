@@ -7,8 +7,6 @@ namespace Serversideprogrammeringsapi.Database.Models
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
 
-        public List<UserToDoLists>? ToDoLists { get; set; }
-
         public DateTimeOffset Created { get; set; }
         public DateTimeOffset Updated { get; set; }
         public DateTimeOffset? Disabled { get; set; }

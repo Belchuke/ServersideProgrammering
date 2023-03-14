@@ -12,7 +12,7 @@ using Serversideprogrammeringsapi.Database;
 namespace Serversideprogrammeringsapi.Migrations.ToDoMigrations
 {
     [DbContext(typeof(ToDoDbContext))]
-    [Migration("20230314082116_IntialToDo")]
+    [Migration("20230314142751_IntialToDo")]
     partial class IntialToDo
     {
         /// <inheritdoc />
@@ -57,14 +57,6 @@ namespace Serversideprogrammeringsapi.Migrations.ToDoMigrations
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
-
-                    b.Property<string>("KeyDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("KeyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("ToDoListId")
                         .HasColumnType("bigint");
@@ -111,14 +103,6 @@ namespace Serversideprogrammeringsapi.Migrations.ToDoMigrations
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
-
-                    b.Property<string>("KeyDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("KeyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("Updated")
                         .HasColumnType("datetimeoffset");

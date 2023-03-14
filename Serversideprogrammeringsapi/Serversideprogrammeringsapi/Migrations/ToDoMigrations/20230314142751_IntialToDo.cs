@@ -18,10 +18,8 @@ namespace Serversideprogrammeringsapi.Migrations.ToDoMigrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DataName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KeyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IVName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KeyDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IVDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -41,10 +39,8 @@ namespace Serversideprogrammeringsapi.Migrations.ToDoMigrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DataName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KeyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IVName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KeyDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IVDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ToDoListId = table.Column<long>(type: "bigint", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),

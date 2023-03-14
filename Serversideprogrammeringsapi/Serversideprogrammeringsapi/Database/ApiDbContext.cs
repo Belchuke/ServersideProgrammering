@@ -9,7 +9,6 @@ namespace Serversideprogrammeringsapi.Database
     {
         public virtual DbSet<AuthRefreshToken> AuthRefreshToken { get; set; }
         public virtual DbSet<SignupOtp> SignupOtps { get; set; }
-        public virtual DbSet<UserToDoLists> UserToDoLists { get; set; }
 
         public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options)
         {
@@ -50,15 +49,6 @@ namespace Serversideprogrammeringsapi.Database
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.Entity<UserToDoLists>(entity =>
-            {
-                entity.HasKey(k => new
-                {
-                    k.UserId,
-                    k.ToDoListId
-                });
-            });
         }
     }
 }

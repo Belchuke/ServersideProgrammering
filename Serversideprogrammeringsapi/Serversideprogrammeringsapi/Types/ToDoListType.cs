@@ -6,11 +6,17 @@ namespace Serversideprogrammeringsapi.Types
 {
     public class ToDoListType
     {
+        public bool IsSuccessful { get; set; }
+        public string? Message { get; set; }
+
         [IsProjected(true)] // enforces requesting 
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public long UserId { get; set; }
+        public long? Id { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+
+
+        [IsProjected(true)] // enforces requesting 
+        public long? UserId { get; set; }
 
         [UsePaging(IncludeTotalCount = true, DefaultPageSize = 50)]
         [UseProjection]
@@ -28,7 +34,7 @@ namespace Serversideprogrammeringsapi.Types
                         Id = i.Id,
                         Name = i.DataName.Decrypt(aesKey, i.IVName),
                         Description = i.DataDescription.Decrypt(aesKey, i.IVDescription),
-                        ToDoListId = Id,
+                        ToDoListId = (long)Id,
                         Created = i.Created,
                         Disabled = i.Disabled,
                         IsEnabled = i.IsEnabled,
@@ -37,9 +43,9 @@ namespace Serversideprogrammeringsapi.Types
         }
 
 
-        public DateTimeOffset Created { get; set; }
-        public DateTimeOffset Updated { get; set; }
+        public DateTimeOffset? Created { get; set; }
+        public DateTimeOffset? Updated { get; set; }
         public DateTimeOffset? Disabled { get; set; }
-        public bool IsEnabled { get; set; } = true;
+        public bool? IsEnabled { get; set; } = true;
     }
 }

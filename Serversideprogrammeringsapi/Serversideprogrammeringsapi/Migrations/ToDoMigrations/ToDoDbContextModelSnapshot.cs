@@ -101,10 +101,6 @@ namespace Serversideprogrammeringsapi.Migrations.ToDoMigrations
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
 
-                    b.Property<string>("KeyDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTimeOffset>("Updated")
                         .HasColumnType("datetimeoffset");
 

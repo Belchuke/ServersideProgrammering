@@ -7,12 +7,16 @@ namespace Serversideprogrammeringsapi.Types
 {
     public class ToDoListItemType
     {
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public bool IsSuccessful { get; set; }
+        public string? Message { get; set; }
 
         [IsProjected(true)]
-        public long ToDoListId { get; set; }
+        public long? Id { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+
+        [IsProjected(true)]
+        public long? ToDoListId { get; set; }
 
         [UseProjection]
         public async Task<ToDoListType> ToDoList([ScopedService] ToDoDbContext dbContext)
@@ -36,9 +40,9 @@ namespace Serversideprogrammeringsapi.Types
                 .FirstAsync();
         }
 
-        public DateTimeOffset Created { get; set; }
-        public DateTimeOffset Updated { get; set; }
+        public DateTimeOffset? Created { get; set; }
+        public DateTimeOffset? Updated { get; set; }
         public DateTimeOffset? Disabled { get; set; }
-        public bool IsEnabled { get; set; } = true;
+        public bool? IsEnabled { get; set; } = true;
     }
 }
