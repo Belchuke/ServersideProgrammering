@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using Bogus.DataSets;
 using Microsoft.Extensions.Options;
+using Serversideprogrammeringsapi.Env;
 using Serversideprogrammeringsapi.Models;
 using System.Net.Mail;
 
@@ -10,9 +11,9 @@ namespace Serversideprogrammeringsapi.Services.ExternalContactService
     {
         private readonly SimpleSmtpOptions _options;
 
-        public SimpleSmtpMailSenderService(IOptions<SimpleSmtpOptions> options)
+        public SimpleSmtpMailSenderService()
         {
-            _options = options.Value;
+            _options = EnvHandler.GetSmtpOptions();
         }
 
         public async Task SendEmailAsync(EmailSendOptions request)
