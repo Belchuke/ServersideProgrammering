@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useMutation } from '@apollo/client';
-import { TWO_FACTOR_AUTH } from '../api/UserEndpoints';
+import { REGISTER_TWO_FACTOR_AUTH } from '../api/UserEndpoints';
 
-const TwoFactorAuthView = () => {
+const RegisterTwoFactorAuthView = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [userAuthState, setUserAuthState] = useState({
@@ -14,7 +14,7 @@ const TwoFactorAuthView = () => {
         message: '',
         isSuccessful: false
     });
-    const [twoFactorAuthMutation] = useMutation(TWO_FACTOR_AUTH);
+    const [twoFactorAuthMutation] = useMutation(REGISTER_TWO_FACTOR_AUTH);
 
     const handleSubmit = () => {
         twoFactorAuthMutation({
@@ -64,4 +64,4 @@ const TwoFactorAuthView = () => {
     );
 }
 
-export default TwoFactorAuthView;
+export default RegisterTwoFactorAuthView;

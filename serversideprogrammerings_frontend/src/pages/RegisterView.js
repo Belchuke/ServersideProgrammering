@@ -16,9 +16,6 @@ const RegisterView = () => {
     });
     const [registerMutation] = useMutation(REGISTER_USER);
 
-    //const [mutationFunction, { loading, error, data }] = useMutation(registerUser("test", "hej"))
-    //   const {loading, error, data} = useMutation(registerUser("test", "hej"));
-
     const handleRegister = () => {
         registerMutation({
             variables: {
@@ -28,7 +25,7 @@ const RegisterView = () => {
         })
         .then(res => {
             if (res.data.registerUser.isSuccessful)
-                navigate('/two-factor-auth', { state: { username: userState.userName }});
+                navigate('two-factor-auth', { state: { username: userState.userName }});
             else
                 setApiResponseState({
                    isSuccessful: res.data.registerUser.isSuccessful,

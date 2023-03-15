@@ -32,7 +32,7 @@ export const REGISTER_USER =
             }
         }
 `;
-export const TWO_FACTOR_AUTH = 
+export const REGISTER_TWO_FACTOR_AUTH = 
     gql`
         mutation ValidateOTP($username: String!, $code: String!) {
             validateOTP(input: {
@@ -41,6 +41,33 @@ export const TWO_FACTOR_AUTH =
             }) {
                 isSuccessful,
                 message
+            }
+        }
+`;
+export const SIGN_IN = 
+    gql`
+        mutation SignIn($username: String!, $password: String!) {
+            signIn(input: {
+                username: $username,
+                password: $password
+            }) {
+                isSuccessful,
+                message
+            }
+        }
+`;
+export const SIGN_IN_TWO_FACTOR_AUTH = 
+    gql`
+        mutation TwoFactorSignIn($username: String!, $code: String!) {
+            toFactorSignIn(input: {
+                username: $username,
+                code: $code
+            }) {
+                isSuccessful,
+                message,
+                token,
+                expires,
+                refreshToken
             }
         }
 `;
