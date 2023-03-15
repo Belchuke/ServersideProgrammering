@@ -9,6 +9,9 @@ const apiUrl = "https://localhost:7228/graphql"
 
 const client = new ApolloClient({
   uri: apiUrl,
+  headers: {
+    authorization: 'Bearer ' + localStorage.getItem('token'),
+  },
   cache: new InMemoryCache(),
 });
 

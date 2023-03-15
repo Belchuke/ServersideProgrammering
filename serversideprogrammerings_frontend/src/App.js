@@ -2,15 +2,13 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import ToDoListView from './pages/ToDoListView'
-import CreateTodoView from './pages/CreateTodoView'
+import CreateToDoView from './pages/CreateToDoView'
+import CreateToDoListView from './pages/CreateToDoListView'
 import SignInView from './pages/SignInView'
 import RegisterView from './pages/RegisterView'
 import RegisterTwoFactorAuthView from './pages/RegisterTwoFactorAuthView'
 import SignInTwoFactorAuthView from './pages/SignInTwoFactorAuthView'
 import NotFoundView from './pages/NotFoundView'
-
-//import { GET_USERS, REGISTER_USER } from './api/UserQueries';
-//import { useQuery, gql } from '@apollo/client';
 
 const App = () => {
 	//const {loading, er, data} = useQuery(GET_USERS());
@@ -22,7 +20,8 @@ const App = () => {
         	<Routes>
 				<Route path='/' element={<Layout />}>
 					<Route index element={<ToDoListView />} />
-        	    	<Route path="create-todo" element={<CreateTodoView />} />
+        	    	<Route path="create-todo" element={<CreateToDoView />} />
+        	    	<Route path="create-todo-list" element={<CreateToDoListView />} />
         	    	<Route path="sign-in" element={<SignInView />} />
         	    	<Route path="sign-in/two-factor-auth" element={<SignInTwoFactorAuthView />} />
         	    	<Route path="register" element={<RegisterView />} />

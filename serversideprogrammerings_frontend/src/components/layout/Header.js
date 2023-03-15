@@ -9,9 +9,10 @@ const Header = () => {
 	}
 
 	return (
-		<header>
-			<Link to="/">To do list</Link>
+		<header style={{display: 'flex', flexDirection: 'row', gap: '5px'}}>
+			<Link to="/">My to do list</Link>
 			<Link to="/create-todo">Create to do</Link>
+			<Link to="/create-todo-list">Create to do list</Link>
 			{
 				localStorage.getItem('token') == null
 				? <Link to="/sign-in">Sign in</Link>
