@@ -66,6 +66,15 @@ namespace Serversideprogrammeringsapi.Services.AuthService
                 };
             }
 
+            if (!await _userManager.CheckPasswordAsync(user, input.Password))
+            {
+                return new CredentialResult()
+                {
+                    IsSuccessful = false,
+                    Message = "Invalid username or password",
+                };
+            }
+
             string token = await _userManager.GenerateTwoFactorTokenAsync(user);
 
             await _externalContactService.SendTwoFactorToken(user.UserName, token);
@@ -121,6 +130,8 @@ namespace Serversideprogrammeringsapi.Services.AuthService
 
             return new AuthResultType()
             {
+                IsSuccessful = true,
+
                 Token = await _jwtFactory.GenerateEncodedToken(result.UserName, identity),
 
                 Expires = DateTimeOffset.UtcNow.AddSeconds(_jwtFactory.GetJwtOptions().ValidFor.TotalSeconds),
