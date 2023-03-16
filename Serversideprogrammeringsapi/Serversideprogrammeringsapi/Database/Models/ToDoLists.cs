@@ -9,11 +9,11 @@ namespace Serversideprogrammeringsapi.Database.Models
         [Key]
         public long Id { get; set; }
 
-        public string DataName { get; set; }
-        public string IVName { get; set; }
+        public byte[] DataName { get; set; }
+        public byte[] IVName { get; set; }
 
-        public string DataDescription { get; set; }
-        public string IVDescription { get; set; }
+        public byte[] DataDescription { get; set; }
+        public byte[] IVDescription { get; set; }
 
         public long UserId { get; set; }
 

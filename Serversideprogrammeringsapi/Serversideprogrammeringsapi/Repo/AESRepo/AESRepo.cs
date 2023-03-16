@@ -17,28 +17,20 @@ namespace Serversideprogrammeringsapi.Repo.AESRepo
             _KeyBytes = Encoding.UTF8.GetBytes(_AESKey);
         }
 
-        public string GenerateINstring()
-        {
-            byte[] data = new byte[32]; // 32 bytes = 256 bits
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                rng.GetBytes(data);
-            }
-
-            return Convert.ToBase64String(data);
-        }
-
         public AESEncryptResult Encrypt(string text)
         {
-            string IV = GenerateINstring();
-
-            byte[] ivBytes = Encoding.UTF8.GetBytes(IV);
-            byte[] plainBytes = Encoding.UTF8.GetBytes(text);
-
             using (Aes aes = Aes.Create())
             {
                 aes.Key = _KeyBytes;
-                aes.IV = ivBytes;
+
+                byte[] iv = new byte[16];
+
+                using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+                {
+                    rng.GetBytes(iv);
+                }
+
+                aes.IV = iv;
 
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
@@ -46,42 +38,47 @@ namespace Serversideprogrammeringsapi.Repo.AESRepo
                 {
                     using (CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
                     {
-                        cryptoStream.Write(plainBytes, 0, plainBytes.Length);
-                        cryptoStream.FlushFinalBlock();
-                        byte[] cipherBytes = memoryStream.ToArray();
+                        using (StreamWriter sw = new StreamWriter(cryptoStream))
+                        {
+                            sw.Write(text);
+                        }
+
+                        byte[] result = memoryStream.ToArray();
 
                         return new AESEncryptResult()
                         {
-                            EncryptedText = Convert.ToBase64String(cipherBytes),
-                            IV = IV,
+                            EncryptedText = result,
+                            IV = aes.IV,
                         };
                     }
                 }
             }
         }
 
-        public string Decrypt(string cipherText, string iv)
+        public string Decrypt(byte[] cipherText, byte[] iv)
         {
-            byte[] ivBytes = Encoding.UTF8.GetBytes(iv);
-            byte[] cipherBytes = Convert.FromBase64String(cipherText);
+            string plaintext = null;
 
             using (Aes aes = Aes.Create())
             {
                 aes.Key = _KeyBytes;
-                aes.IV = ivBytes;
+                aes.IV = iv;
 
                 ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
 
-                using (MemoryStream memoryStream = new MemoryStream(cipherBytes))
+                using (MemoryStream ms = new MemoryStream(cipherText))
                 {
-                    using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
+                    using (CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
                     {
-                        byte[] plainBytes = new byte[cipherBytes.Length];
-                        int decryptedByteCount = cryptoStream.Read(plainBytes, 0, plainBytes.Length);
-                        return Encoding.UTF8.GetString(plainBytes, 0, decryptedByteCount);
+                        using (StreamReader sr = new StreamReader(cs))
+                        {
+                            plaintext = sr.ReadToEnd();
+                        }
                     }
                 }
             }
+
+            return plaintext;
         }
 
     }

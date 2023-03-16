@@ -2,7 +2,7 @@
 {
     public class AESEncryptResult
     {
-        public string EncryptedText { get; set; }
-        public string IV { get; set; }
+        public byte[] EncryptedText { get; set; }
+        public byte[] IV { get; set; }
     }
 }

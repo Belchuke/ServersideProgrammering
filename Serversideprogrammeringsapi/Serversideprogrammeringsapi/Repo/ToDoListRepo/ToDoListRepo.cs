@@ -59,7 +59,7 @@ namespace Serversideprogrammeringsapi.Repo.ToDoListRepo
                 DataName = encryptName.EncryptedText,
                 IVName = encryptName.IV,
                 DataDescription = encryptDescription.EncryptedText,
-                IVDescription = encryptDescription.EncryptedText,
+                IVDescription = encryptDescription.IV,
                 ListItems = new List<ToDoListIteam>(),
             };
 
@@ -76,7 +76,7 @@ namespace Serversideprogrammeringsapi.Repo.ToDoListRepo
                         DataName = encryptListName.EncryptedText,
                         IVName = encryptListName.IV,
                         DataDescription = encryptListDescription.EncryptedText,
-                        IVDescription = encryptListDescription.EncryptedText,
+                        IVDescription = encryptListDescription.IV,
                     });
                 }
             }
@@ -100,7 +100,7 @@ namespace Serversideprogrammeringsapi.Repo.ToDoListRepo
                 DataName = encryptName.EncryptedText,
                 IVName = encryptName.IV,
                 DataDescription = encryptDescription.EncryptedText,
-                IVDescription = encryptDescription.EncryptedText,
+                IVDescription = encryptDescription.IV,
                 ToDoListId = (long)input.ToDoListId,
             };
 
@@ -179,7 +179,7 @@ namespace Serversideprogrammeringsapi.Repo.ToDoListRepo
                         DataName = encryptName.EncryptedText,
                         IVName = encryptName.IV,
                         DataDescription = encryptDescription.EncryptedText,
-                        IVDescription = encryptDescription.EncryptedText,
+                        IVDescription = encryptDescription.IV,
                         ToDoListId = list.Id,
                     });
                 }

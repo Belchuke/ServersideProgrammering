@@ -1,6 +1,7 @@
 ﻿using Serversideprogrammeringsapi.Database;
 using Serversideprogrammeringsapi.Env;
 using Serversideprogrammeringsapi.ExtensionMethods;
+using Serversideprogrammeringsapi.Repo.AESRepo;
 
 namespace Serversideprogrammeringsapi.Types
 {
@@ -22,7 +23,7 @@ namespace Serversideprogrammeringsapi.Types
         [UseProjection]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<ToDoListItemType> ListItems([ScopedService] ToDoDbContext dbContext)
+        public IQueryable<ToDoListItemType> ListItems([ScopedService] ToDoDbContext dbContext, [Service] IAESRepo _repo)
         {
             string aesKey = EnvHandler.GetAESKey();
 
@@ -32,8 +33,8 @@ namespace Serversideprogrammeringsapi.Types
                     new ToDoListItemType()
                     {
                         Id = i.Id,
-                        Name = i.DataName.Decrypt(aesKey, i.IVName),
-                        Description = i.DataDescription.Decrypt(aesKey, i.IVDescription),
+                        Name = _repo.Decrypt(i.DataName, i.IVName),
+                        Description = _repo.Decrypt(i.DataDescription, i.IVDescription),
                         ToDoListId = (long)Id,
                         Created = i.Created,
                         Disabled = i.Disabled,

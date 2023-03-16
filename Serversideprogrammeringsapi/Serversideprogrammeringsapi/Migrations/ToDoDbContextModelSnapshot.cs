@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Serversideprogrammeringsapi.Database;
 
 #nullable disable
 
-namespace Serversideprogrammeringsapi.Migrations.ToDoMigrations
+namespace Serversideprogrammeringsapi.Migrations
 {
     [DbContext(typeof(ToDoDbContext))]
-    [Migration("20230314142751_IntialToDo")]
-    partial class IntialToDo
+    partial class ToDoDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,24 +33,24 @@ namespace Serversideprogrammeringsapi.Migrations.ToDoMigrations
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("DataDescription")
+                    b.Property<byte[]>("DataDescription")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("DataName")
+                    b.Property<byte[]>("DataName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<DateTimeOffset?>("Disabled")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("IVDescription")
+                    b.Property<byte[]>("IVDescription")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("IVName")
+                    b.Property<byte[]>("IVName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
@@ -82,24 +79,24 @@ namespace Serversideprogrammeringsapi.Migrations.ToDoMigrations
                     b.Property<DateTimeOffset>("Created")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("DataDescription")
+                    b.Property<byte[]>("DataDescription")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("DataName")
+                    b.Property<byte[]>("DataName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<DateTimeOffset?>("Disabled")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("IVDescription")
+                    b.Property<byte[]>("IVDescription")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("IVName")
+                    b.Property<byte[]>("IVName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");

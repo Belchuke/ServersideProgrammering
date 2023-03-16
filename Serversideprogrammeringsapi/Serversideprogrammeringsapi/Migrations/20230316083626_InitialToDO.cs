@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Serversideprogrammeringsapi.Migrations.ToDoMigrations
+namespace Serversideprogrammeringsapi.Migrations
 {
     /// <inheritdoc />
-    public partial class IntialToDo : Migration
+    public partial class InitialToDO : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,10 +17,10 @@ namespace Serversideprogrammeringsapi.Migrations.ToDoMigrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DataName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IVName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DataDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IVDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DataName = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    IVName = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    DataDescription = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    IVDescription = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     Updated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -38,10 +38,10 @@ namespace Serversideprogrammeringsapi.Migrations.ToDoMigrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DataName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IVName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DataDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IVDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DataName = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    IVName = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    DataDescription = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    IVDescription = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     ToDoListId = table.Column<long>(type: "bigint", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     Updated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),

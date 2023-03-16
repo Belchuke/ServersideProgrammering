@@ -15,7 +15,7 @@ namespace Serversideprogrammeringsapi.Schema.Query
         [UseDbContext(typeof(ToDoDbContext))]
         [Authorize]
         [UseProjection]
-        public async Task<ToDoListType> GetToDoListById([GraphQLName("toDoListId")] long id, ClaimsPrincipal claims, [Service(ServiceKind.Pooled)] ToDoDbContext dbContext, [Service] IAESRepo _aesRepo)
+        public async Task<ToDoListType> GetToDoListById([GraphQLName("toDoListId")] long id, ClaimsPrincipal claims, [Service] ToDoDbContext dbContext, [Service] IAESRepo _aesRepo)
         {
             ToDoListType get = await dbContext.ToDoLists
                 .Where(x => x.Id == id)
@@ -50,7 +50,7 @@ namespace Serversideprogrammeringsapi.Schema.Query
         [UseDbContext(typeof(ToDoDbContext))]
         [Authorize]
         [UseProjection]
-        public async Task<ToDoListItemType> GetToDoListItemById([GraphQLName("toDoListItemId")] long id, ClaimsPrincipal claims, [Service(ServiceKind.Pooled)] ToDoDbContext dbContext, [Service] IAESRepo _aesRepo, [Service] IToDoListRepo _toDoRepo)
+        public async Task<ToDoListItemType> GetToDoListItemById([GraphQLName("toDoListItemId")] long id, ClaimsPrincipal claims, [Service] ToDoDbContext dbContext, [Service] IAESRepo _aesRepo, [Service] IToDoListRepo _toDoRepo)
         {
             ToDoListItemType get = await dbContext.ToDoListIteams
                 .Where(x => x.Id == id)
@@ -88,7 +88,7 @@ namespace Serversideprogrammeringsapi.Schema.Query
         [UseProjection]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<ToDoListType> GetUserToDoListsById([GraphQLName("userId")] long id, ClaimsPrincipal claims, [Service(ServiceKind.Pooled)] ToDoDbContext dbContext, [Service] IAESRepo _aesRepo)
+        public IQueryable<ToDoListType> GetUserToDoListsById([GraphQLName("userId")] long id, ClaimsPrincipal claims, [Service] ToDoDbContext dbContext, [Service] IAESRepo _aesRepo)
         {
             if (!claims.IsAdmin() && id != claims.GetUserId())
             {

@@ -2,6 +2,8 @@
 using Serversideprogrammeringsapi.Database;
 using Serversideprogrammeringsapi.Env;
 using Serversideprogrammeringsapi.ExtensionMethods;
+using Serversideprogrammeringsapi.Repo.AESRepo;
+using Serversideprogrammeringsapi.Repo.ToDoListRepo;
 
 namespace Serversideprogrammeringsapi.Types
 {
@@ -20,14 +22,12 @@ namespace Serversideprogrammeringsapi.Types
 
         public UserType? User { get; set; }
 
-        public List<ToDoListType> ToDoLists([Service] ToDoDbContext toDoDbContext)
+        public List<ToDoListType> ToDoLists([Service] ToDoDbContext toDoDbContext, [Service] IAESRepo _repo)
         {
             if (UserId == null)
             {
                 return new List<ToDoListType>();
             }
-
-            string aesKey = EnvHandler.GetAESKey();
 
             return toDoDbContext.ToDoLists
                 .Where(x => x.UserId == UserId)
@@ -35,7 +35,8 @@ namespace Serversideprogrammeringsapi.Types
                     new ToDoListType()
                     {
                         Id = list.Id,
-                        Name = list.DataName.Decrypt(aesKey, list.IVName),
+                        Name = _repo.Decrypt(list.DataName, list.IVName),
+                        Description = _repo.Decrypt(list.DataDescription, list.IVDescription),
                         Created = DateTimeOffset.UtcNow,
                         Updated = DateTimeOffset.UtcNow,
                         Disabled = DateTimeOffset.UtcNow,
