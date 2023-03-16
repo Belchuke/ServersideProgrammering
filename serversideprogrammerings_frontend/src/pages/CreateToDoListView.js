@@ -18,7 +18,7 @@ const CreateToDoListView = () => {
             variables: {
                 name: toDoListState.name,
                 description: toDoListState.description,
-                items: []
+                items: null
             }
         })
         .then(res => {
@@ -34,6 +34,7 @@ const CreateToDoListView = () => {
 
     return (
         <div>
+            <h2>Create to do list</h2>
             <p>Name</p>
             <input 
                 value={toDoListState.name}

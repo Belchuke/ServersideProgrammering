@@ -27,3 +27,33 @@ export const CREATE_TO_DO =
             }
         }
 `;
+
+export const GET_USERS_TO_DO_LIST_ID_NAMES = 
+    gql`
+        query GetUsersToDoListNames($userId: Long!) {
+            userToDoListsById(userId: $userId) {
+                nodes {
+                    id,
+                    name
+                }
+            }
+        }
+`;
+
+export const GET_USERS_TO_DO_LISTS = 
+    gql`
+        query GetUsersToDoListNames($userId: Long!) {
+            userToDoListsById(userId: $userId) {
+                nodes {
+                    name
+                    description
+                    listItems {
+                        nodes {
+                            name,
+                            description
+                        }
+                    }
+                }
+            }
+        }
+`;

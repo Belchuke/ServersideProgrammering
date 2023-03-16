@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
-import { CREATE_TO_DO} from '../api/ToDoEndpoints';
+import React, { useEffect, useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
+import { CREATE_TO_DO, GET_USERS_TO_DO_LIST_ID_NAMES} from '../api/ToDoEndpoints';
 
 const CreateToDoView = () => {
     const [toDoState, setToDoState] = useState({
@@ -13,6 +13,7 @@ const CreateToDoView = () => {
         isSuccessful: false
     });
     const [createToDoMutation] = useMutation(CREATE_TO_DO);
+    const { loading, error, data } = useQuery(GET_USERS_TO_DO_LIST_ID_NAMES)
 
     let toDoListIds = [1, 2, 3]
 
@@ -37,6 +38,7 @@ const CreateToDoView = () => {
 
     return (
         <div>
+            <h2>Create to do</h2>
             <p>Name</p>
             <input 
                 value={toDoState.name}
