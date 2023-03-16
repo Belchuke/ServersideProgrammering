@@ -1,26 +1,6 @@
 import { gql } from '@apollo/client';
-//
-////const client = new ApolloClient({
-////  uri: apiUrl,
-////  cache: new InMemoryCache()
-////});
-//
-//export const registerUser = (userName, password) => {
-//    return gql`
-//        mutation  {
-//            registerUser(input: {
-//                "${userName}",
-//                "${password}"
-//            }) {
-//                isSuccessful
-//            }
-//        }
-//`;
-//}
 
-//TODO: there is no type checking on the parameters. Figure out a neat way to do it.
-
-export const REGISTER_USER = 
+export const REGISTER_USER =
     gql`
         mutation RegisterUser($userName: String!, $password: String!) {
             registerUser(input: {
@@ -32,7 +12,7 @@ export const REGISTER_USER =
             }
         }
 `;
-export const REGISTER_TWO_FACTOR_AUTH = 
+export const REGISTER_TWO_FACTOR_AUTH =
     gql`
         mutation ValidateOTP($username: String!, $code: String!) {
             validateOTP(input: {
@@ -44,7 +24,7 @@ export const REGISTER_TWO_FACTOR_AUTH =
             }
         }
 `;
-export const SIGN_IN = 
+export const SIGN_IN =
     gql`
         mutation SignIn($username: String!, $password: String!) {
             signIn(input: {
@@ -56,7 +36,7 @@ export const SIGN_IN =
             }
         }
 `;
-export const SIGN_IN_TWO_FACTOR_AUTH = 
+export const SIGN_IN_TWO_FACTOR_AUTH =
     gql`
         mutation TwoFactorSignIn($username: String!, $code: String!) {
             toFactorSignIn(input: {
@@ -65,6 +45,10 @@ export const SIGN_IN_TWO_FACTOR_AUTH =
             }) {
                 isSuccessful,
                 message,
+                userId,
+                user {
+                    username
+                }
                 token,
                 expires,
                 refreshToken
@@ -74,7 +58,7 @@ export const SIGN_IN_TWO_FACTOR_AUTH =
 
 
 export const GET_USERS = () => {
-return gql`
+    return gql`
 query r {
     requiredQuery{
         name

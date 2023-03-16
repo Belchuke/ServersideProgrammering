@@ -22,22 +22,21 @@ const RegisterView = () => {
                 userName: userState.userName,
                 password: userState.password
             }
-        })
-        .then(res => {
+        }).then(res => {
             if (res.data.registerUser.isSuccessful)
-                navigate('two-factor-auth', { state: { username: userState.userName }});
+                navigate('two-factor-auth', { state: { username: userState.userName } });
             else
                 setApiResponseState({
-                   isSuccessful: res.data.registerUser.isSuccessful,
-                   message:      res.data.registerUser.message });
-        })
-        .catch(err => console.log(err));
+                    isSuccessful: res.data.registerUser.isSuccessful,
+                    message: res.data.registerUser.message
+                });
+        }).catch(err => console.log(err));
     };
 
     return (
         <div>
             <p>Username (Email):</p>
-            <input 
+            <input
                 value={userState.userName}
                 onChange={e => setUserState(prev => { return { ...prev, userName: e.target.value } })}
                 placeholder='Username'
@@ -55,18 +54,5 @@ const RegisterView = () => {
         </div>
     );
 }
-
-//const handleRegister = async () => {
-//    const { userName, password } = this.state;
-//
-//    try {
-//      const user = await this.props.signupUserMutation({variables: {userName, password }})
-//      localStorage.setItem('graphcoolToken', user.data.signupUser.token)
-//      this.props.history.replace('/')
-//    } catch (e) {
-//      console.error(`An error occured: `, e)
-//      this.props.history.replace('/')
-//    }
-//}
 
 export default RegisterView;

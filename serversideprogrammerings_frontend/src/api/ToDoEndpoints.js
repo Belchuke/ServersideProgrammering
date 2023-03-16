@@ -1,12 +1,11 @@
 import { gql } from '@apollo/client';
 
-export const CREATE_TO_DO_LIST = 
+export const CREATE_TO_DO_LIST =
     gql`
-        mutation CreateToDoList($name: String!, $description: String!, $items: [CreateToDoListItemInput!]) {
+        mutation CreateToDoList($name: String!, $description: String!) {
             createToDoList(input: {
                 name: $name,
-                description: $description,
-                items: $items
+                description: $description
             }) {
                 isSuccessful,
                 message
@@ -14,7 +13,7 @@ export const CREATE_TO_DO_LIST =
         }
 `;
 
-export const CREATE_TO_DO = 
+export const CREATE_TO_DO =
     gql`
         mutation CreateToDoListItem($name: String!, $description: String!, $toDoListId: Long) {
             createToDoListItem(input: {
@@ -23,12 +22,14 @@ export const CREATE_TO_DO =
                 toDoListId: $toDoListId
             }) {
                 isSuccessful,
-                message
+                message,
+                name,
+                description
             }
         }
 `;
 
-export const GET_USERS_TO_DO_LIST_ID_NAMES = 
+export const GET_USERS_TO_DO_LIST_ID_NAMES =
     gql`
         query GetUsersToDoListNames($userId: Long!) {
             userToDoListsById(userId: $userId) {
@@ -40,15 +41,17 @@ export const GET_USERS_TO_DO_LIST_ID_NAMES =
         }
 `;
 
-export const GET_USERS_TO_DO_LISTS = 
+export const GET_USERS_TO_DO_LISTS =
     gql`
         query GetUsersToDoListNames($userId: Long!) {
             userToDoListsById(userId: $userId) {
                 nodes {
+                    id
                     name
                     description
                     listItems {
                         nodes {
+                            id,
                             name,
                             description
                         }

@@ -18,25 +18,25 @@ const CreateToDoListView = () => {
             variables: {
                 name: toDoListState.name,
                 description: toDoListState.description,
-                items: null
             }
         })
-        .then(res => {
-            setApiResponseState({
-                isSuccessful: res.data.createToDoList.isSuccessful,
-                message:      res.data.createToDoList.message });
-        })
-        .catch(err => console.log(err));
+            .then(res => {
+                setApiResponseState({
+                    isSuccessful: res.data.createToDoList.isSuccessful,
+                    message: res.data.createToDoList.message
+                });
+            })
+            .catch(err => console.log(err));
     };
 
-    if (localStorage.getItem('token') ==  null)
+    if (localStorage.getItem('token') == null)
         return (<h2>Sign in to see create a to do</h2>)
 
     return (
         <div>
             <h2>Create to do list</h2>
             <p>Name</p>
-            <input 
+            <input
                 value={toDoListState.name}
                 onChange={e => setToDoListState(prev => { return { ...prev, name: e.target.value } })}
                 placeholder='Name'

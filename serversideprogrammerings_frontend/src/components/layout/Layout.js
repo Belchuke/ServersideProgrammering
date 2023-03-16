@@ -1,13 +1,14 @@
-import { Outlet, Link } from "react-router-dom";
+import { useCallback } from 'react';
+import { Outlet } from "react-router-dom";
 import Header from './Header';
 import Footer from './Footer';
 
-const Layout = () => {
+const Layout = ({ authState, setAuthState }) => {
   return (
     <>
-        <Header />
-        <Outlet />
-        <Footer />
+      <Header authState={authState} setAuthState={setAuthState} />
+      <Outlet />
+      <Footer />
     </>
   );
 };

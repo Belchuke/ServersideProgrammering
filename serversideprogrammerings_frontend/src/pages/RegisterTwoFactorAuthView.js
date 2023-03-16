@@ -7,7 +7,7 @@ const RegisterTwoFactorAuthView = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [userAuthState, setUserAuthState] = useState({
-        username: location.state?.username != undefined ? location.state.username : '',
+        username: location.state?.username !== undefined ? location.state.username : '',
         twoFactorCode: ''
     });
     const [apiResponseState, setApiResponseState] = useState({
@@ -23,38 +23,39 @@ const RegisterTwoFactorAuthView = () => {
                 code: userAuthState.twoFactorCode
             }
         })
-        .then(res => {
-            if (res.data.validateOTP.isSuccessful)
-                navigate('/');
-            else
-                setApiResponseState({
-                   isSuccessful: res.data.validateOTP.isSuccessful,
-                   message:      res.data.validateOTP.message });
-        })
-        .catch(err => console.log(err));
+            .then(res => {
+                if (res.data.validateOTP.isSuccessful)
+                    navigate('/');
+                else
+                    setApiResponseState({
+                        isSuccessful: res.data.validateOTP.isSuccessful,
+                        message: res.data.validateOTP.message
+                    });
+            })
+            .catch(err => console.log(err));
     };
 
     return (
         <div>
             <h3>A two factor authorization code has been sent to your email</h3>
-            { location.state?.username != undefined
-              ? <h4>{location.state.username}</h4>
-              : 
-              <>
-                <p>Username (Email):</p>
-                <input 
-                    value={userAuthState.username}
-                    onChange={e => setUserAuthState(prev => { return { ...prev, username: e.target.value }})}
-                    placeholder='Username'
-                    type="text"
-                />
-              </>
+            {location.state?.username !== undefined
+                ? <h4>{location.state.username}</h4>
+                :
+                <>
+                    <p>Username (Email):</p>
+                    <input
+                        value={userAuthState.username}
+                        onChange={e => setUserAuthState(prev => { return { ...prev, username: e.target.value } })}
+                        placeholder='Username'
+                        type="text"
+                    />
+                </>
             }
 
             <p>Enter the code here:</p>
-            <input 
+            <input
                 value={userAuthState.twoFactorCode}
-                onChange={e => setUserAuthState(prev => { return { ...prev, twoFactorCode: e.target.value }})}
+                onChange={e => setUserAuthState(prev => { return { ...prev, twoFactorCode: e.target.value } })}
                 placeholder='Two factor code'
                 type="text"
             />
