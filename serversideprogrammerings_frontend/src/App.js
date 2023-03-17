@@ -3,7 +3,6 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import ToDoListView from './pages/ToDoListView'
-import CreateToDoView from './pages/CreateToDoView'
 import CreateToDoListView from './pages/CreateToDoListView'
 import SignInView from './pages/SignInView'
 import RegisterView from './pages/RegisterView'
@@ -37,8 +36,7 @@ const App = () => {
 				<Routes>
 					<Route path='/' element={<Layout authState={authState} setAuthState={setAuthStateCallback} />}>
 						<Route index element={<ToDoListView authState={authState} />} />
-						<Route path="create-todo" element={<CreateToDoView />} />
-						<Route path="create-todo-list" element={<CreateToDoListView />} />
+						<Route path="create-todo-list" element={<CreateToDoListView authState={authState} />} />
 						<Route path="sign-in" element={<SignInView />} />
 						<Route path="sign-in/two-factor-auth" element={<SignInTwoFactorAuthView setAuthState={setAuthStateCallback} />} />
 						<Route path="register" element={<RegisterView />} />

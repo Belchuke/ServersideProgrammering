@@ -1,33 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import { CREATE_TO_DO, GET_USERS_TO_DO_LISTS } from '../api/ToDoEndpoints';
+import { CREATE_TO_DO, DELETE_TO_DO_ITEM, GET_USERS_TO_DO_LISTS, UPDATE_TO_DO_ITEM, DELETE_TO_DO_LIST } from '../api/ToDoEndpoints';
 
 const ToDoListView = ({ authState }) => {
     const [toDoesState, setToDoesState] = useState([]);
     const [newToDoesState, setNewToDoesState] = useState({});
     const [createToDoMutation] = useMutation(CREATE_TO_DO);
+    const [updateToDoMutation] = useMutation(UPDATE_TO_DO_ITEM);
+    const [deleteToDoMutation] = useMutation(DELETE_TO_DO_ITEM);
+    const [deleteToDoListMutation] = useMutation(DELETE_TO_DO_LIST);
     const { loading, error, data } = useQuery(GET_USERS_TO_DO_LISTS, {
         variables: {
             userId: Number(authState?.userId)
+        },
+        async onCompleted(data) {
+            let items = []
+            data.userToDoListsById.nodes.forEach(l => {
+                l.listItems.nodes.forEach(i => {
+                    items[i.id] = { id: i.id, name: i.name, description: i.description }
+                });
+            })
+            setToDoesState(items)
         }
     })
-
-    useEffect(() => {
-        let x = []
-        // Dumb copy of the API data
-        data.userToDoListsById.nodes.forEach(l => {
-            l.listItems.nodes.forEach(i => {
-                //setToDoesState(prev => { return { ...prev, [i.id]: { name: i.name, description: i.description } } })
-                x[i.id] = { name: i.name, description: i.description }
-            });
-            //console.log(toDoesState)
-        });
-        setToDoesState(x)
-    });
-
-    const handleUpdate = () => {
-
-    }
 
     const handleCreateToDo = (index, toDoListId) => {
         if (newToDoesState[toDoListId]?.name === undefined)
@@ -43,16 +38,25 @@ const ToDoListView = ({ authState }) => {
             }
         }).then(res => {
             if (res.data.createToDoListItem.isSuccessful)
-                window.location.reload(); //TODO: figure out a way to update the component w/o a reload
-            //data.userToDoListsById.nodes[index].listItems.nodes = [...data.userToDoListsById.nodes[index].listItems.nodes, {
-            //    name: res.data.createToDoListItem.name,
-            //    description: res.data.createToDoListItem.description
-            //}];
+                window.location.reload();
 
             setNewToDoesState(prev => { return { ...prev, [toDoListId]: { ...newToDoesState[toDoListId], message: res.data.createToDoListItem.message } } });
         }).catch(err => console.log(err));
     }
 
+
+    const handleDeleteList = (toDoListId) => {
+        deleteToDoListMutation({
+            variables: {
+                id: toDoListId
+            }
+        }).then(res => {
+            if (res.data.updateToDoList.isSuccessful)
+                window.location.reload();
+
+            setNewToDoesState(prev => { return { ...prev, [toDoListId]: { ...newToDoesState[toDoListId], message: res.data.updateToDoList.message } } });
+        }).catch(err => console.log(err));
+    }
 
     if (authState == null)
         return (<h2>Sign in to see your to do list</h2>);
@@ -63,7 +67,60 @@ const ToDoListView = ({ authState }) => {
     if (error)
         return (<h2>An error occurred while getting your to do list.</h2>);
 
-    //let createNewToDoArr = Array.from({ length: data.userToDoListsById.nodes.length }, (l, i) => { return ({ name: '', description: '' }) });
+    const RenderToDoItem = ({ item, toDoListId }) => {
+        if (item === undefined)
+            return;
+
+        const handleUpdate = () => {
+            updateToDoMutation({
+                variables: {
+                    id: item.id,
+                    name: item.name,
+                    description: item.description,
+                }
+            }).then(res => {
+                if (res.data.updateToDoListItem.isSuccessful)
+                    window.location.reload();
+
+                setNewToDoesState(prev => { return { ...prev, [toDoListId]: { ...newToDoesState[toDoListId], message: res.data.updateToDoListItem.message } } });
+            }).catch(err => console.log(err));
+        }
+        const handleDelete = () => {
+            deleteToDoMutation({
+                variables: {
+                    id: item.id
+                }
+            }).then(res => {
+                if (res.data.updateToDoListItem.isSuccessful)
+                    window.location.reload();
+
+                setNewToDoesState(prev => { return { ...prev, [toDoListId]: { ...newToDoesState[toDoListId], message: res.data.updateToDoListItem.message } } });
+            }).catch(err => console.log(err));
+        }
+
+        return (
+            <tr>
+                <td>
+                    <input
+                        value={item.name}
+                        onChange={e => setToDoesState(prev => { return { ...prev, [item.id]: { ...toDoesState[item.id], name: e.target.value } } })}
+                        type="text"
+                    />
+                </td>
+                <td>
+                    <input
+                        value={item.description}
+                        onChange={e => setToDoesState(prev => { return { ...prev, [item.id]: { ...toDoesState[item.id], description: e.target.value } } })}
+                        type="text"
+                    />
+                </td>
+                <td>
+                    <button onClick={handleUpdate}>Update</button>
+                    <button onClick={handleDelete}>Delete</button>
+                </td>
+            </tr>
+        );
+    }
 
     return (
         <>
@@ -72,28 +129,17 @@ const ToDoListView = ({ authState }) => {
                     <>
                         <h3>{toDoList.name}</h3>
                         <p>{toDoList.description}</p>
-                        {toDoList.listItems.nodes.map((item) => {
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Description</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input
-                                                value={toDoesState[item.id].name}
-                                                onChange={e => setToDoesState(prev => { return { ...prev, [item.id]: { ...toDoesState[item.id], name: e.target.value } } })}
-                                            //onChange={e => x[item.id].name = e.target.value}
-                                            />
-                                        </td>
-                                        <td><input value={item.description} /> </td>
-                                        <td><button onClick={handleUpdate}>Update</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        })}
+                        <button onClick={() => handleDeleteList(toDoList.id)}>Delete list</button>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                                {toDoList.listItems.nodes.map((item) => RenderToDoItem({ item: toDoesState[item.id], toDoListId: toDoList.id }))}
+                            </tbody>
+                        </table>
                         <h5>Create a new to do</h5>
                         Name:
                         <input

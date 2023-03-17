@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { CREATE_TO_DO_LIST } from '../api/ToDoEndpoints';
+import { useNavigate } from 'react-router-dom';
 
-const CreateToDoListView = () => {
+const CreateToDoListView = ({ authState }) => {
+    const navigate = useNavigate();
     const [toDoListState, setToDoListState] = useState({
         name: '',
         description: ''
@@ -21,6 +23,9 @@ const CreateToDoListView = () => {
             }
         })
             .then(res => {
+                if (res.data.createToDoList.isSuccessful)
+                    window.location.reload();
+
                 setApiResponseState({
                     isSuccessful: res.data.createToDoList.isSuccessful,
                     message: res.data.createToDoList.message
@@ -29,8 +34,8 @@ const CreateToDoListView = () => {
             .catch(err => console.log(err));
     };
 
-    if (localStorage.getItem('token') == null)
-        return (<h2>Sign in to see create a to do</h2>)
+    if (authState == null)
+        return (<h2>Sign in to create a to do list</h2>)
 
     return (
         <div>
